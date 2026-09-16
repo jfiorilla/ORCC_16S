@@ -14,7 +14,7 @@ conda activate seqproc-env
 
 #where to find the sequence files
 
-FILEPATH='/scratch4/workspace/jade_fiorilla_student_uml_edu-rawseqorcc'
+FILEPATH='/scratch4/workspace/jade_fiorilla_student_uml_edu-rawseqorcc/fastq'
 OUTPUT_RESULTS='/scratch4/workspace/jade_fiorilla_student_uml_edu-rawseqorcc/fastqc'
 
 #create filename if not already created
