@@ -15,12 +15,12 @@ conda activate seqproc-env
 #where to find the sequence files
 
 FILEPATH='/scratch4/workspace/jade_fiorilla_student_uml_edu-rawseqorcc'
-OUTPUT_RESULTS='/scratch4/workspace/jade_fiorilla_student_uml_edu-rawseqorcc/trimmed'
+OUTPUT_RESULTS='/scratch4/workspace/jade_fiorilla_student_uml_edu-rawseqorcc/fastqc'
 
 #create filename if not already created
 ls $FILEPATH -1 | sed 's/_R.*_001.fastq.gz//' | uniq > "$OUTPUT_RESULTS/sampleids.txt"
 
-SAMPLE_NAMES_FILE="/scratch4/workspace/jade_fiorilla_student_uml_edu-rawseqorcc/trimmed/sampleids.txt"
+SAMPLE_NAMES_FILE="/scratch4/workspace/jade_fiorilla_student_uml_edu-rawseqorcc/fastqc/sampleids.txt"
 
 # Check if the file exists
 if [ ! -e "$SAMPLE_NAMES_FILE" ]; then
