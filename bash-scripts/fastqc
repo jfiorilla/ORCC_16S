@@ -47,3 +47,11 @@ while IFS= read -r sample_id; do
 
 done < "$SAMPLE_NAMES_FILE"
 
+# Move zip files into separate directory
+for filename in "$OUTPUT_RESULTS*.zip"
+	do echo $filename
+	mv $filename zip
+done
+
+
+
