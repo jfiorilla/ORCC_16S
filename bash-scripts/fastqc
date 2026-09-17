@@ -11,13 +11,11 @@ module load conda/latest
 
 conda activate seqproc-env
 
-
-#where to find the sequence files
-
+# Where to find the sequence files
 FILEPATH='/scratch4/workspace/jade_fiorilla_student_uml_edu-rawseqorcc/fastq'
 OUTPUT_RESULTS='/scratch4/workspace/jade_fiorilla_student_uml_edu-rawseqorcc/fastqc'
 
-#create filename if not already created
+# Create filename if not already created
 ls $FILEPATH -1 | sed 's/_R.*_001.fastq.gz//' | uniq > "$OUTPUT_RESULTS/sampleids.txt"
 
 SAMPLE_NAMES_FILE="/scratch4/workspace/jade_fiorilla_student_uml_edu-rawseqorcc/fastqc/sampleids.txt"
@@ -46,12 +44,3 @@ while IFS= read -r sample_id; do
 
 
 done < "$SAMPLE_NAMES_FILE"
-
-# Move zip files into separate directory
-for filename in "$OUTPUT_RESULTS*.zip"
-	do echo $filename
-	mv $filename zip
-done
-
-
-
