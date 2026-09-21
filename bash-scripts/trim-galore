@@ -39,7 +39,7 @@ while IFS= read -r sample_id; do
         continue
     fi
 
-    echo "Running Trim Galore on: $SAMPLE"
+    echo "Running Trim Galore on: $sample_id"
 
     # Run trim_galore
     trim_galore -j "$NSLOTS" --paired $input_r1 $input_r2 --fastqc -o $OUTPUT_RESULTS
