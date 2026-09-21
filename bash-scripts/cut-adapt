@@ -4,22 +4,21 @@
 #SBATCH -p cpu  # Partition
 #SBATCH -t 12:00:00  # Job time limit
 #SBATCH --mail-type=ALL
-#SBATCH -o /scratch4/workspace/jade_fiorilla_student_uml_edu-rawseqorcc/trimmed/slurm-qc-%j.out  # %j = job ID
+#SBATCH -o /scratch4/workspace/jade_fiorilla_student_uml_edu-rawseqorcc/slurm-cutadapt-%j.out  # %j = job ID
 
 module load conda/latest
 
-# Run qc with trim galore and fastqc
 conda activate seqproc-env
 
 # Define the paths and variables
 FILEPATH='/scratch4/workspace/jade_fiorilla_student_uml_edu-rawseqorcc/fastq'
-OUTPUT_RESULTS='/scratch4/workspace/jade_fiorilla_student_uml_edu-rawseqorcc/trimmed'
+OUTPUT_RESULTS='/scratch4/workspace/jade_fiorilla_student_uml_edu-rawseqorcc/trimmed-cutadapt'
 NSLOTS=4  
 
 #create filename if not already created
 ls $FILEPATH -1 | sed 's/_R.*_001.fastq.gz//' | uniq > "$OUTPUT_RESULTS/sampleids.txt"
 
-SAMPLE_NAMES_FILE="/scratch4/workspace/jade_fiorilla_student_uml_edu-rawseqorcc/trimmed/sampleids.txt"
+SAMPLE_NAMES_FILE="/scratch4/workspace/jade_fiorilla_student_uml_edu-rawseqorcc/trimmed-cutadapt/sampleids.txt"
 
 # Check if the file exists
 if [ ! -e "$SAMPLE_NAMES_FILE" ]; then
@@ -39,10 +38,16 @@ while IFS= read -r sample_id; do
         continue
     fi
 
-    echo "Running Trim Galore on: $sample_id"
+    echo "Running cutadapt on: $sample_id"
 
-    # Run trim_galore
-    trim_galore -j "$NSLOTS" --paired $input_r1 $input_r2 --fastqc -o $OUTPUT_RESULTS
-
+    # Run cutadapt
+    ### SGW used an overlap of adapters -o 2 (default is 3)
+    cutadapt -j "$NSLOTS"
+    -g GTGYCAGCMGCCGCGGTAA 
+    -G GGACTACNVGGGTWTCTAAT
+    -o $OUTPUT_RESULTS/${sample_id}_R1_trim.fastq
+    -p $OUTPUT_RESULTS/${sample_id}_R2_trim.fastq
+    "${sample_id}"_R1_001.fastq.gz
+    "${sample_id}"_R2_001.fastq.gz
 
 done < "$SAMPLE_NAMES_FILE"
