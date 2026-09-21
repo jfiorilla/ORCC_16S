@@ -42,12 +42,6 @@ while IFS= read -r sample_id; do
 
     # Run cutadapt
     ### SGW used an overlap of adapters -o 2 (default is 3)
-    cutadapt -j "$NSLOTS"
-    -g GTGYCAGCMGCCGCGGTAA 
-    -G GGACTACNVGGGTWTCTAAT
-    -o $OUTPUT_RESULTS/${sample_id}_R1_trim.fastq
-    -p $OUTPUT_RESULTS/${sample_id}_R2_trim.fastq
-    "${sample_id}"_R1_001.fastq.gz
-    "${sample_id}"_R2_001.fastq.gz
+    cutadapt -j "$NSLOTS" -g GTGYCAGCMGCCGCGGTAA -G GGACTACNVGGGTWTCTAAT -o $OUTPUT_RESULTS/${sample_id}_R1_trim.fastq -p $OUTPUT_RESULTS/${sample_id}_R2_trim.fastq "${sample_id}"_R1_001.fastq.gz "${sample_id}"_R2_001.fastq.gz
 
 done < "$SAMPLE_NAMES_FILE"
