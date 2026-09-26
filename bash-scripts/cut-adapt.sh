@@ -12,7 +12,7 @@ conda activate cutadapt
 
 # Define the paths and variables
 FILEPATH='/scratch4/workspace/jade_fiorilla_student_uml_edu-rawseqorcc/fastq'
-OUTPUT_RESULTS='/scratch4/workspace/jade_fiorilla_student_uml_edu-rawseqorcc/trimmed-cutadapt'
+OUTPUT_RESULTS='/scratch4/workspace/jade_fiorilla_student_uml_edu-rawseqorcc/trimmed-cutadapt-quality'
 NSLOTS=6  
 
 # Create filename if not already created
