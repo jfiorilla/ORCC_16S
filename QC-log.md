@@ -105,6 +105,7 @@ Notes on these different trimming tools:
 Adjusted [cut-adapt](bash-scripts/cut-adapt) to include `--nextseq-trim=20` to account for NextSeq poly-G tails when quality trimming and `--overlap 2` which overrides the default of needing three matching base pairs to identify adapters (idea from SGW's [code](https://github.com/sagw/DE_micro/blob/fe607fcbdcdb33eff0e052d0e7483907e0471a56/QC_Run1.ipynb)) .
 - Can also tack on the 3' end trimming since there may be some overlap between forward and reverse since area of interest is only 291bp and the sequence reads are 301bp
 
+- slurm 6490 + fastqc
 ### Trim galore
 Looking at the trim galore [slurm output](QC-outputs/slurm-trimgalore-64527440.out) I realized that the adapters auto-detected were nextera not illumina so going to try to force that by adding the flag `--illumina` and will also add `--nextseq 20` to account for the NextSeq poly-G tails when quality trimming.
 - May be redundant to do trim galore then cutadapt if cutadapt can manage both 5' and 3' trimming at once, but still intrested to see these results/if forcing the illumina adapters makes any difference
