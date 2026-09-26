@@ -18,6 +18,8 @@ OUTPUT_RESULTS='/scratch4/workspace/jade_fiorilla_student_uml_edu-rawseqorcc/fas
 # Create filename if not already created
 ls $FILEPATH -1 | sed 's/_R.*_001.fastq.gz//' | uniq > "$OUTPUT_RESULTS/sampleids.txt"
 
+# If list of sample names already exists comment out line above 
+# Direct to existing sampleids.txt file made during fastqc
 SAMPLE_NAMES_FILE="/scratch4/workspace/jade_fiorilla_student_uml_edu-rawseqorcc/fastqc/sampleids.txt"
 
 # Check if the file exists
