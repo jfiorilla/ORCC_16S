@@ -13,10 +13,10 @@ conda activate seqproc-env
 
 # Where to find the sequence files
 FILEPATH='/scratch4/workspace/jade_fiorilla_student_uml_edu-rawseqorcc/fastq'
-OUTPUT_RESULTS='/scratch4/workspace/jade_fiorilla_student_uml_edu-rawseqorcc/fastqc'
+OUTPUT_RESULTS='/scratch4/workspace/jade_fiorilla_student_uml_edu-rawseqorcc/trimmed-cutadapt-quality/fastqc'
 
 # Create filename if not already created
-ls $FILEPATH -1 | sed 's/_R.*_001.fastq.gz//' | uniq > "$OUTPUT_RESULTS/sampleids.txt"
+# ls $FILEPATH -1 | sed 's/_R.*_001.fastq.gz//' | uniq > "$OUTPUT_RESULTS/sampleids.txt"
 
 # If list of sample names already exists comment out line above 
 # Direct to existing sampleids.txt file made during fastqc
