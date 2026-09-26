@@ -1,5 +1,5 @@
 #!/bin/bash
-#SBATCH -c 4  # Number of Cores per Task
+#SBATCH -c 6  # Number of Cores per Task
 #SBATCH --mem=16G  # Requested Memory
 #SBATCH -p cpu  # Partition
 #SBATCH -t 12:00:00  # Job time limit
@@ -14,13 +14,14 @@ conda activate seqproc-env
 # Define the paths and variables
 FILEPATH='/scratch4/workspace/jade_fiorilla_student_uml_edu-rawseqorcc/fastq'
 OUTPUT_RESULTS='/scratch4/workspace/jade_fiorilla_student_uml_edu-rawseqorcc/trimmed'
-NSLOTS=4  
+NSLOTS=6  
 
 # Create filename if doesn't already exist 
-ls $FILEPATH -1 | sed 's/_R.*_001.fastq.gz//' | uniq > "$OUTPUT_RESULTS/sampleids.txt"
+# ls $FILEPATH -1 | sed 's/_R.*_001.fastq.gz//' | uniq > "$OUTPUT_RESULTS/sampleids.txt"
 
 # If list of sample names already exists comment out line above 
-SAMPLE_NAMES_FILE="/scratch4/workspace/jade_fiorilla_student_uml_edu-rawseqorcc/trimmed/sampleids.txt"
+# Direct to existing sampleids.txt file made during fastqc
+SAMPLE_NAMES_FILE="/scratch4/workspace/jade_fiorilla_student_uml_edu-rawseqorcc/fastqc/sampleids.txt"
 
 # Check if the file exists
 if [ ! -e "$SAMPLE_NAMES_FILE" ]; then
@@ -43,7 +44,7 @@ while IFS= read -r sample_id; do
     echo "Running Trim Galore on: $sample_id"
 
     # Run trim_galore
-    trim_galore -j "$NSLOTS" --paired $input_r1 $input_r2 --fastqc -o $OUTPUT_RESULTS
+    trim_galore -j "$NSLOTS" --nextseq 20 --illumina --paired $input_r1 $input_r2 --fastqc -o $OUTPUT_RESULTS
 
 
 done < "$SAMPLE_NAMES_FILE"
