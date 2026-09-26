@@ -25,7 +25,7 @@ done
 - Wrote script within terminal using [`nano`](https://linuxize.com/post/how-to-use-nano-text-editor/) text editor
 
 >Command: `sbatch`  
->Script: [fastqc](bash-scripts/fastqc.sh)    
+>Script: [fastqc](bash-scripts/fastqc)    
 >Output: [sampleids.txt](sampleids.txt) (missing slurm)
 
 ### MultiQC
@@ -39,7 +39,7 @@ Combined both Nikea's [metagenomic workflow](https://github.com/nikeaulrich/Meta
 - Also produces a samplesid.txt file, but realize now that I could have just set the `SAMPLE_NAMES_FILE` variable to the existing file created during [raw FastQC](#FastQC) steps
 
 >Command: `sbatch`   
->Script: [trim-galore](bash-scripts/trim-galore.sh)  
+>Script: [trim-galore](bash-scripts/trim-galore)  
 >Output: [slurm-trimgalore-64527440](QC-outputs/slurm-trimgalore-64527440.out)
 
 ### MultiQC
@@ -57,10 +57,10 @@ conda install -c bionconda cutadapt
 ```
 
 ### Cutadapt
-Pieced together [trim-galore](bash-scripts/trim-galore.sh) script, some of Caroline's [16S workflow](https://github.com/cdesouza02/BEL_16S_ITS2/blob/51f1b7652672009b21ec146c69977494d83159f5/scripts/2_cutadapt_trim), and some of SGW's [16S workflow](https://github.com/sagw/DE_micro/blob/fe607fcbdcdb33eff0e052d0e7483907e0471a56/QC_Run1.ipynb)
+Pieced together [trim-galore](bash-scripts/trim-galore) script, some of Caroline's [16S workflow](https://github.com/cdesouza02/BEL_16S_ITS2/blob/51f1b7652672009b21ec146c69977494d83159f5/scripts/2_cutadapt_trim), and some of SGW's [16S workflow](https://github.com/sagw/DE_micro/blob/fe607fcbdcdb33eff0e052d0e7483907e0471a56/QC_Run1.ipynb)
 
 >Command: `sbatch`  
->Script: [cut-adapt](bash-scripts/cut-adapt.sh)  
+>Script: [cut-adapt](bash-scripts/cut-adapt)  
 >Output: [slurm-cutadapt-64671732](QC-outputs/slurm-cutadapt-64671732.out)
 
 ### FastQC
@@ -71,7 +71,7 @@ conda activate seqproc-env
 ```
 
 >Command: `sbatch`  
->Script: [fastqc](bash-scripts/fastqc.sh)  
+>Script: [fastqc](bash-scripts/fastqc)  
 >Output: [slurm-fastqc-cutadapt-64675148](QC-outputs/slurm-fastqc-cutadapt-64675148.out)
 
 ### MultiQC
@@ -87,7 +87,24 @@ Comparing the trim galore and cutadapt multiqc, they appear to have trimmed diff
 	- Adapter content plots look much cleaner
 Using `head` and a difference checker, definitely apparent that trim galore did not touch the 16S primers while cutadapt did cut the primers at least for 2024_Both01_Both01_O1_gill_S28_R1. The only other difference is that trim-galore is missing/cutadapt retained a consistent CTGTCTC at the end of each line. Comparing to the raw fastq, this CTGTCTC is also present, so it seems like trim galore purposefully cuts this sequence. 
 - This 7bp sequence is part of the [Illumina adapter](https://support-docs.illumina.com/SHARE/AdapterSequences/Content/Nextera_Illumina-Sequences.htm) *CTGTCTC*TTATACACATCT
+
 Looking at individual fastq reports, cutadapt has lower base quality around 60-100bp whereas trim galore looks much cleaner up through 290bp. 
 
-## 9.26.2026 - trim galore with 16S primers
-Adjusted [cut-adapt](bash-scripts/cut-adapt.sh) to include `--nextseq-trim=20` to account for NextSeq sequencing mechanism when quality trimming and `--overlap 2` which overrides the default of needing three matching base pairs to identify adapters (SGW's [code](https://github.com/sagw/DE_micro/blob/fe607fcbdcdb33eff0e052d0e7483907e0471a56/QC_Run1.ipynb))
+## 9.26.2026 - adjusting cutadapt and trim galore
+Directory metadata after today
+- trimmed: used trim-galore with auto-detect adapters
+- trim-galore-illumina: used trim-galore forcing illumina adapters and nextseq flag
+- trimmed-cutadapt: used cut-adapt
+- trimmed-cutadapt-quality: used cut-adapt with a nextseq flag and reduced adapter overlap requirement
+
+Notes on these different trimming tools:
+- We give cutadapt 5' primer sequences to trim (forward and reverse reads)
+- Trim galore cuts adapters from the 3' end of reads
+	- Don't think I can force trim galore to also cut primers
+### Cutadapt
+Adjusted [cut-adapt](bash-scripts/cut-adapt) to include `--nextseq-trim=20` to account for NextSeq poly-G tails when quality trimming and `--overlap 2` which overrides the default of needing three matching base pairs to identify adapters (idea from SGW's [code](https://github.com/sagw/DE_micro/blob/fe607fcbdcdb33eff0e052d0e7483907e0471a56/QC_Run1.ipynb)) .
+- Can also tack on the 3' end trimming since there may be some overlap between forward and reverse since area of interest is only 291bp and the sequence reads are 301bp
+
+### Trim galore
+Looking at the trim galore [slurm output](QC-outputs/slurm-trimgalore-64527440.out) I realized that the adapters auto-detected were nextera not illumina so going to try to force that by adding the flag `--illumina` and will also add `--nextseq 20` to account for the NextSeq poly-G tails when quality trimming.
+- May be redundant to do trim galore then cutadapt if cutadapt can manage both 5' and 3' trimming at once, but still intrested to see these results/if forcing the illumina adapters makes any difference
