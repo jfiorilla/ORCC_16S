@@ -3,7 +3,7 @@ Used [Brooke's script](https://github.com/brookewicz/CBC_metagenomics/blob/db0de
 - Her code has a double `#!/bin/bash` that threw an error
 
 >Command: `sbatch`  
->Script: [md5check](bash-scripts/md5check.sh)  
+>Script: [md5check](bash-scripts/md5check)  
 >Output: [slurm-checksum-64092117](QC-outputs/slurm-checksum-64092117.out), [md5_checksums](QC-outputs/md5_checksums.txt)  
 
 ## 9.16.2026 - QC on raw files
