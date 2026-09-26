@@ -33,7 +33,7 @@ done
 >Output: [multiqc_raw](QC-outputs/multiqc-reports/multiqc_raw.html)
 
 ## 9.17.2026 - start processing sequences
-After talking with SGW, plan is to follow [DADA2](https://benjjneb.github.io/dada2/) pipeline which recommends trimmomatic or cutadapt tools, but I thought I'd also try trim galore since I already have a tested script for that from my metagenomics QC workflow  
+After talking with SGW, plan is to follow [DADA2](https://benjjneb.github.io/dada2/) pipeline which recommends trimmomatic or cutadapt tools, but I thought I'd also try trim galore since I already have a tested script for that from my metagenomics QC workflow.
 ### Trim galore
 Combined both Nikea's [metagenomic workflow](https://github.com/nikeaulrich/Metagenomics_workflow/blob/fcfd850453887a23301e5d07c220aab7c9972994/0_QC.ipynb) and Julia's [RNAseq workflow](https://github.com/jgmcdonough/CE24_RNA-seq/blob/d5c6e46913b5a4067e697677178ea129e5e5aa8f/processing/processing_seqs.ipynb) 
 - Also produces a samplesid.txt file, but realize now that I could have just set the `SAMPLE_NAMES_FILE` variable to the existing file created during [raw FastQC](#FastQC) steps
@@ -64,6 +64,30 @@ Pieced together [trim-galore](bash-scripts/trim-galore.sh) script, some of Carol
 >Output: [slurm-cutadapt-64671732](QC-outputs/slurm-cutadapt-64671732.out)
 
 ### FastQC
+Had to switch conda environments
+```
+conda deactivate
+conda activate seqproc-env
+```
+
 >Command: `sbatch`  
 >Script: [fastqc](bash-scripts/fastqc.sh)  
 >Output: [slurm-fastqc-cutadapt-64675148](QC-outputs/slurm-fastqc-cutadapt-64675148.out)
+
+### MultiQC
+>Comand: `multiqc .`  
+>Output: [multiqc_cutadapt](QC-outputs/multiqc-reports/multiqc_cutadapt.html)  
+
+Comparing the trim galore and cutadapt multiqc, they appear to have trimmed differently, which was expected since as far as I'm aware, trim galore will only cut the identified Illumina adapters (see slurm) and won't recognize the 16S primers automatically. 
+- **Cutadapt** 
+	- Some samples were not trimmed at all, still 301bp in length
+	- Adapter content plot looks, at first glance, comparable to the raw fastq multiqc report
+- **Trim galore**
+	- All samples except undetermined sequences were trimmed to ~290bp, Illumina adapters are ~63bp
+	- Adapter content plots look much cleaner
+Using `head` and a difference checker, definitely apparent that trim galore did not touch the 16S primers while cutadapt did cut the primers at least for 2024_Both01_Both01_O1_gill_S28_R1. The only other difference is that trim-galore is missing/cutadapt retained a consistent CTGTCTC at the end of each line. Comparing to the raw fastq, this CTGTCTC is also present, so it seems like trim galore purposefully cuts this sequence. 
+- This 7bp sequence is part of the [Illumina adapter](https://support-docs.illumina.com/SHARE/AdapterSequences/Content/Nextera_Illumina-Sequences.htm) *CTGTCTC*TTATACACATCT
+Looking at individual fastq reports, cutadapt has lower base quality around 60-100bp whereas trim galore looks much cleaner up through 290bp. 
+
+## 9.26.2026 - trim galore with 16S primers
+Adjusted [cut-adapt](bash-scripts/cut-adapt.sh) to include `--nextseq-trim=20` to account for NextSeq sequencing mechanism when quality trimming and `--overlap 2` which overrides the default of needing three matching base pairs to identify adapters (SGW's [code](https://github.com/sagw/DE_micro/blob/fe607fcbdcdb33eff0e052d0e7483907e0471a56/QC_Run1.ipynb))
