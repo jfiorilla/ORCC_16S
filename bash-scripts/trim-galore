@@ -4,7 +4,7 @@
 #SBATCH -p cpu  # Partition
 #SBATCH -t 12:00:00  # Job time limit
 #SBATCH --mail-type=ALL
-#SBATCH -o /scratch4/workspace/jade_fiorilla_student_uml_edu-rawseqorcc/trimmed/slurm-trimgalore-%j.out  # %j = job ID
+#SBATCH -o /scratch4/workspace/jade_fiorilla_student_uml_edu-rawseqorcc/slurm-trimgalore-%j.out  # %j = job ID
 
 module load conda/latest
 
@@ -13,7 +13,7 @@ conda activate seqproc-env
 
 # Define the paths and variables
 FILEPATH='/scratch4/workspace/jade_fiorilla_student_uml_edu-rawseqorcc/fastq'
-OUTPUT_RESULTS='/scratch4/workspace/jade_fiorilla_student_uml_edu-rawseqorcc/trimmed'
+OUTPUT_RESULTS='/scratch4/workspace/jade_fiorilla_student_uml_edu-rawseqorcc/trim-galore-illumina'
 NSLOTS=6  
 
 # Create filename if doesn't already exist 
