@@ -1,5 +1,5 @@
 #!/bin/bash
-#SBATCH -c 4  # Number of Cores per Task
+#SBATCH -c 6  # Number of Cores per Task
 #SBATCH --mem=16G  # Requested Memory
 #SBATCH -p cpu  # Partition
 #SBATCH -t 12:00:00  # Job time limit
@@ -13,7 +13,7 @@ conda activate cutadapt
 # Define the paths and variables
 FILEPATH='/scratch4/workspace/jade_fiorilla_student_uml_edu-rawseqorcc/fastq'
 OUTPUT_RESULTS='/scratch4/workspace/jade_fiorilla_student_uml_edu-rawseqorcc/trimmed-cutadapt'
-NSLOTS=4  
+NSLOTS=6  
 
 # Create filename if not already created
 # ls $FILEPATH -1 | sed 's/_R.*_001.fastq.gz//' | uniq > "$OUTPUT_RESULTS/sampleids.txt"
@@ -44,6 +44,6 @@ while IFS= read -r sample_id; do
 
     # Run cutadapt
     ### SGW used an overlap of adapters -o 2 (default is 3)
-    cutadapt -j "$NSLOTS" -g GTGYCAGCMGCCGCGGTAA -G GGACTACNVGGGTWTCTAAT -o $OUTPUT_RESULTS/${sample_id}_R1_trim.fastq -p $OUTPUT_RESULTS/${sample_id}_R2_trim.fastq $input_r1 $input_r2
+    cutadapt -j "$NSLOTS" --nextseq-trim=20 --overlap 2 -g GTGYCAGCMGCCGCGGTAA -G GGACTACNVGGGTWTCTAAT -o $OUTPUT_RESULTS/${sample_id}_R1_trim.fastq -p $OUTPUT_RESULTS/${sample_id}_R2_trim.fastq $input_r1 $input_r2
 
 done < "$SAMPLE_NAMES_FILE"
