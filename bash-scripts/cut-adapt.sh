@@ -1,5 +1,5 @@
 #!/bin/bash
-#SBATCH -c 6  # Number of Cores per Task
+#SBATCH -c 4  # Number of Cores per Task
 #SBATCH --mem=16G  # Requested Memory
 #SBATCH -p cpu  # Partition
 #SBATCH -t 12:00:00  # Job time limit
@@ -13,7 +13,7 @@ conda activate cutadapt
 # Define the paths and variables
 FILEPATH='/scratch4/workspace/jade_fiorilla_student_uml_edu-rawseqorcc/fastq'
 OUTPUT_RESULTS='/scratch4/workspace/jade_fiorilla_student_uml_edu-rawseqorcc/trimmed-cutadapt-quality'
-NSLOTS=6  
+NSLOTS=4  
 
 # Create filename if not already created
 # ls $FILEPATH -1 | sed 's/_R.*_001.fastq.gz//' | uniq > "$OUTPUT_RESULTS/sampleids.txt"
