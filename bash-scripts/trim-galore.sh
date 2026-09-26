@@ -16,9 +16,10 @@ FILEPATH='/scratch4/workspace/jade_fiorilla_student_uml_edu-rawseqorcc/fastq'
 OUTPUT_RESULTS='/scratch4/workspace/jade_fiorilla_student_uml_edu-rawseqorcc/trimmed'
 NSLOTS=4  
 
-#create filename if not already created
+# Create filename if doesn't already exist 
 ls $FILEPATH -1 | sed 's/_R.*_001.fastq.gz//' | uniq > "$OUTPUT_RESULTS/sampleids.txt"
 
+# If list of sample names already exists comment out line above 
 SAMPLE_NAMES_FILE="/scratch4/workspace/jade_fiorilla_student_uml_edu-rawseqorcc/trimmed/sampleids.txt"
 
 # Check if the file exists

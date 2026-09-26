@@ -15,10 +15,12 @@ FILEPATH='/scratch4/workspace/jade_fiorilla_student_uml_edu-rawseqorcc/fastq'
 OUTPUT_RESULTS='/scratch4/workspace/jade_fiorilla_student_uml_edu-rawseqorcc/trimmed-cutadapt'
 NSLOTS=4  
 
-#create filename if not already created
-ls $FILEPATH -1 | sed 's/_R.*_001.fastq.gz//' | uniq > "$OUTPUT_RESULTS/sampleids.txt"
+# Create filename if not already created
+# ls $FILEPATH -1 | sed 's/_R.*_001.fastq.gz//' | uniq > "$OUTPUT_RESULTS/sampleids.txt"
 
-SAMPLE_NAMES_FILE="/scratch4/workspace/jade_fiorilla_student_uml_edu-rawseqorcc/trimmed-cutadapt/sampleids.txt"
+# If list of sample names already exists comment out line above 
+# Direct to existing sampleids.txt file made during fastqc
+SAMPLE_NAMES_FILE="/scratch4/workspace/jade_fiorilla_student_uml_edu-rawseqorcc/fastqc/sampleids.txt"
 
 # Check if the file exists
 if [ ! -e "$SAMPLE_NAMES_FILE" ]; then
