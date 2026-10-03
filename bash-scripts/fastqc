@@ -1,10 +1,10 @@
 #!/bin/bash
-#SBATCH -c 5  # Number of Cores per Task
+#SBATCH -c 6  # Number of Cores per Task
 #SBATCH --mem=100G  # Requested Memory
 #SBATCH -p cpu  # Partition
 #SBATCH -t 7:00:00  # Job time limit
 #SBATCH --mail-type=ALL
-#SBATCH -o /scratch4/workspace/jade_fiorilla_student_uml_edu-rawseqorcc/slurm-fastqc-cutadapt-%j.out  # %j = job ID
+#SBATCH -o /scratch4/workspace/jade_fiorilla_student_uml_edu-rawseqorcc/slurm-fastqc-%j.out  # %j = job ID
 
 
 module load conda/latest
@@ -12,8 +12,8 @@ module load conda/latest
 conda activate seqproc-env
 
 # Where to find the sequence files
-FILEPATH='/scratch4/workspace/jade_fiorilla_student_uml_edu-rawseqorcc/trimmed-cutadapt-final'
-OUTPUT_RESULTS='/scratch4/workspace/jade_fiorilla_student_uml_edu-rawseqorcc/trimmed-cutadapt-final/fastqc'
+FILEPATH='/scratch4/workspace/jade_fiorilla_student_uml_edu-rawseqorcc/trimmed-fastp'
+OUTPUT_RESULTS='/scratch4/workspace/jade_fiorilla_student_uml_edu-rawseqorcc/trimmed-fastp/fastqc'
 
 # Create filename if not already created
 # ls $FILEPATH -1 | sed 's/_R.*_001.fastq.gz//' | uniq > "$OUTPUT_RESULTS/sampleids.txt"
@@ -31,8 +31,8 @@ fi
 # Read each line from the file and perform actions
 while IFS= read -r sample_id; do
     # Form the full file names
-    input_r1="$FILEPATH/${sample_id}_R1_trim.fastq"
-    input_r2="$FILEPATH/${sample_id}_R2_trim.fastq"
+    input_r1="$FILEPATH/${sample_id}_R1_trim.fastq.gz"
+    input_r2="$FILEPATH/${sample_id}_R2_trim.fastq.gz"
     
     # Ensure the input files exist before running the tools
     if [ ! -e "$input_r1" ] || [ ! -e "$input_r2" ]; then
