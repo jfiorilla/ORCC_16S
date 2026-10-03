@@ -1,19 +1,19 @@
 #!/bin/bash
 #SBATCH -c 6  # Number of Cores per Task
-#SBATCH --mem=100G  # Requested Memory
+#SBATCH --mem=16G  # Requested Memory
 #SBATCH -p cpu  # Partition
-#SBATCH -t 7:00:00  # Job time limit
+#SBATCH -t 12:00:00  # Job time limit
 #SBATCH --mail-type=ALL
-#SBATCH -o /scratch4/workspace/jade_fiorilla_student_uml_edu-rawseqorcc/slurm-fastqc-%j.out  # %j = job ID
-
+#SBATCH -o /scratch4/workspace/jade_fiorilla_student_uml_edu-rawseqorcc/slurm-fastp-%j.out  # %j = job ID
 
 module load conda/latest
 
-conda activate seqproc-env
+conda activate fastp-env
 
-# Where to find the sequence files
-FILEPATH='/scratch4/workspace/jade_fiorilla_student_uml_edu-rawseqorcc/trimmed-fastp'
-OUTPUT_RESULTS='/scratch4/workspace/jade_fiorilla_student_uml_edu-rawseqorcc/trimmed-fastp/fastqc'
+# Define the paths and variables
+FILEPATH='/scratch4/workspace/jade_fiorilla_student_uml_edu-rawseqorcc/fastq'
+OUTPUT_RESULTS='/scratch4/workspace/jade_fiorilla_student_uml_edu-rawseqorcc/trimmed-fastp'
+NSLOTS=6  
 
 # Create filename if not already created
 # ls $FILEPATH -1 | sed 's/_R.*_001.fastq.gz//' | uniq > "$OUTPUT_RESULTS/sampleids.txt"
@@ -31,8 +31,8 @@ fi
 # Read each line from the file and perform actions
 while IFS= read -r sample_id; do
     # Form the full file names
-    input_r1="$FILEPATH/${sample_id}_R1_trim.fastq.gz"
-    input_r2="$FILEPATH/${sample_id}_R2_trim.fastq.gz"
+    input_r1="$FILEPATH/${sample_id}_R1_001.fastq.gz"
+    input_r2="$FILEPATH/${sample_id}_R2_001.fastq.gz"
     
     # Ensure the input files exist before running the tools
     if [ ! -e "$input_r1" ] || [ ! -e "$input_r2" ]; then
@@ -40,9 +40,9 @@ while IFS= read -r sample_id; do
         continue
     fi
 
-    # Run fastqc
-    fastqc -o $OUTPUT_RESULTS $input_r1
-    fastqc -o $OUTPUT_RESULTS $input_r2
+    echo "Running fastp on: $sample_id"
 
+    # Run fastp
+    fastp -w "$NSLOTS" -i $input_r1 -I $input_r2 -o $OUTPUT_RESULTS/${sample_id}_R1_trim.fastq.gz -O $OUTPUT_RESULTS/${sample_id}_R2_trim.fastq.gz --detect_adapter_for_pe 
 
 done < "$SAMPLE_NAMES_FILE"
