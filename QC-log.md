@@ -37,6 +37,8 @@ Combined both Nikea's [metagenomic workflow](https://github.com/nikeaulrich/Meta
 #### MultiQC
 >Output: [trimgalore html report](QC-outputs/multiqc-reports/trimgalore.html)
 
+Adapter content looks clean, some reads were also trimmed short...may want to investigate? 
+
 ## 9.21.2026 - first stab at using cutadapt
 ### Conda
 Created new conda environment `cutadapt-env` that just has the cutadapt package
@@ -110,16 +112,37 @@ A new modification to [cut-adapt](bash-scripts/cut-adapt) to include the [nexter
 
 Remaining adapter contamination, but it's weird because there is adapter found at 50bp so if I trim those (which cutadapt didn't do anyway, maybe because not at 3' tail) I will have very short reads...
 
-## 10.1.26 two step trim galore then cutadapt
-### Cutadapt
-Use cutadapt without the quality flags on the fastq files that were first processed by trimgalore.
->Output: [slurm-cutadapt-65117438](QC-outputs/slurm/slurm-cutadapt-65117438.out)  
+## 10.1.26 try fastp to remove adapters
+### Fastp
+>Output: [slurm-fastp-65117744](QC-outputs/slurm/slurm-fastp-65117744.out)
+>Directory: fastp
+
+#### FastQC
+>Output: [slurm-fastqc-fastp-65174707](QC-outputs/slurm/slurm-fastqc-fastp-65174707.out)
+
+#### MultiQC
+>Output: 
+
+## 10.2.26 two step trim galore/fastp then cutadapt
+### Cutadapt (with trim galore)
+Use cutadapt without quality or adapter flags (only 5' primer sequences) on the fastq files that were first processed by trim galore.
+>Output: [slurm-cutadapt-65150120](QC-outputs/slurm/slurm-cutadapt-65150120.out)  
 >Directory: trimgalore-cutadapt
 
 #### FastQC
->Output: [slurm-fastqc-cutadapt-65121906](QC-outputs/slurm/slurm-fastqc-cutadapt-65121906.out)
+>Output: [slurm-fastqc-cutadapt-65159048](QC-outputs/slurm/slurm-fastqc-cutadapt-65159048.out)
 
 #### MultiQC
 >Output: [trimgalore-cutadapt](QC-outputs/multiqc-reports/trimgalore-cutadapt.html)
 
-No significant adapter content, but sequence length is still all over the place
+No significant adapter content, but sequence length is still a bit all over the place. The trim galore fasq files used from 9.17 also had some short (~20bp) reads. Are these ones that I should just filter out before proceeding with the DADA2 pipeline? 
+
+### Cutadapt (with fastp)
+Use cutadapt without quality or adapter flags (only 5' primer sequences) on the fastq files that were first processed by fastp.
+>Output: [slurm-cutadapt-65175878](QC-outputs/slurm/slurm-cutadapt-65175878.out)
+>Directory: fastp-cutadapt
+
+#### FastQC
+
+
+#### MultiQC
