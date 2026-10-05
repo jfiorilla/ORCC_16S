@@ -100,7 +100,7 @@ Not many samples had Illumina adapter; SGW was probably right, that when the seq
 
 ## 9.29.26 - add nextera adapter sequences to cutadapt
 ### Cutadapt 
-A new modification to [cut-adapt](bash-scripts/cut-adapt) to include the [nextera transposase adapters](https://support-docs.illumina.com/SHARE/AdapterSequences/Content/Nextera_Illumina-Sequences.htm) that trim galore automatically identified (added the flags `--a CTGTCTCTTATA` and `--A CTGTCTCTTATA`). Kept the poly-G aware quality trimming and overlap.
+A new modification to script to include the [nextera transposase adapters](https://support-docs.illumina.com/SHARE/AdapterSequences/Content/Nextera_Illumina-Sequences.htm) that trim galore automatically identified (added the flags `--a CTGTCTCTTATA` and `--A CTGTCTCTTATA`). Kept the poly-G aware quality trimming and overlap.
 >Output: [slurm-cutadapt-65026069](QC-outputs/slurm/slurm-cutadapt-65026069.out) 
 >Directory: cutadapt_quality_adapters
 
@@ -113,15 +113,25 @@ A new modification to [cut-adapt](bash-scripts/cut-adapt) to include the [nexter
 Remaining adapter contamination, but it's weird because there is adapter found at 50bp so if I trim those (which cutadapt didn't do anyway, maybe because not at 3' tail) I will have very short reads...
 
 ## 10.1.26 try fastp to remove adapters
+### Conda
+Created new conda environment `fastp-env` that just has the cutadapt package
+```
+module load conda/latest
+conda create --name fastp-env
+conda activate fastp-env
+conda install -c bionconda fastp
+```
 ### Fastp
->Output: [slurm-fastp-65117744](QC-outputs/slurm/slurm-fastp-65117744.out)
+>Output: [slurm-fastp-65117744](QC-outputs/slurm/slurm-fastp-65117744.out), [fastp_report](QC-outputs/fastp_report.html)
 >Directory: fastp
 
 #### FastQC
 >Output: [slurm-fastqc-fastp-65174707](QC-outputs/slurm/slurm-fastqc-fastp-65174707.out)
 
 #### MultiQC
->Output: 
+>Output: [fastp html report](QC-outputs/multiqc-reports/fastp.html)
+
+Need to compare more closely with trim galore, but also had some difficulty with certain reads (some with no R2 reads at all...)
 
 ## 10.2.26 two step trim galore/fastp then cutadapt
 ### Cutadapt (with trim galore)
@@ -133,7 +143,7 @@ Use cutadapt without quality or adapter flags (only 5' primer sequences) on the 
 >Output: [slurm-fastqc-cutadapt-65159048](QC-outputs/slurm/slurm-fastqc-cutadapt-65159048.out)
 
 #### MultiQC
->Output: [trimgalore-cutadapt](QC-outputs/multiqc-reports/trimgalore-cutadapt.html)
+>Output: [trimgalore-cutadapt](QC-outputs/multiqc-reports/trimgalore_cutadapt.html)
 
 No significant adapter content, but sequence length is still a bit all over the place. The trim galore fasq files used from 9.17 also had some short (~20bp) reads. Are these ones that I should just filter out before proceeding with the DADA2 pipeline? 
 
@@ -143,6 +153,23 @@ Use cutadapt without quality or adapter flags (only 5' primer sequences) on the 
 >Directory: fastp-cutadapt
 
 #### FastQC
-
-
+>Output: [slurm-fastqc-65201400](QC-outputs/slurm/slurm-fastqc-65201400.out)
 #### MultiQC
+>Output: [fastp_cutadapt](QC-outputs/multiqc-reports/fastp_cutadapt.html)
+
+## 10.3.26 overview of what I've tried
+Cutadapt with primers
+Cutadapt with primers and quality trimming
+Cutadapt with primers and quality trimming and adapters 
+Trim galore
+Trim galore + specified illumina adapters
+Trim galore + cutadapt with primers
+Fastp
+Fastp + cutadapt with primers
+
+Things to consider
+- Fastp versus trimgalore
+- Length trimming 3' end in general
+- Filter reads smaller than X bp
+- Filter samples with less than X reads 
+- Move forward with DADA2 and see how alignment goes
