@@ -1,24 +1,12 @@
-## 10.5.2026 setting up unity with kernel to run R
+## 10.6.2026 setting up unity with R + Bionconductor
 ### Conda
-Created new environment `skbio` to run python kernel in jupyter notebooks on unity
+Create environment `dada2-env` in terminal, easier than doing it in R
 ```
-conda create --name skbio python=3.14
-conda activate skbio
-conda install -c conda-forge scikit-bio
-pip install jupyter
-pip install ipykernel
-python -m ipykernel install --user --name skbio --display-name "Python (skbio)"
-```
-- Belated realized I won't really need to use this kernel since I won't be running python, but good to have...
-
-Created new environment `r-env` to run R kernel in jupyter notebooks on unity
-```
-conda create -n r-env python=3.14
-conda activate r-env
-conda config --add channels conda-forge
-conda config --set channel_priority strict
-conda install r-base
+conda create -n dada2-env python=3.14 
+conda activate dada2-env
+conda install -c conda-forge -c bioconda --strict-channel-priority r-base r-biocmanager bioconductor-dada2
 conda install -c conda-forge r-tidyverse
 pip install jupyter
 conda install -c conda-forge r-irkernel
 ```
+
