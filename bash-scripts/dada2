@@ -1,0 +1,17 @@
+#!/bin/bash
+#SBATCH -c 18  # Number of Cores per Task
+#SBATCH --mem=180G  # Requested Memory
+#SBATCH -p cpu  # Partition
+#SBATCH --qos=long
+#SBATCH -t 120:00:00  # Job time limit
+#SBATCH --mail-type=ALL
+#SBATCH -o /scratch4/workspace/jade_fiorilla_student_uml_edu-rawseqorcc/slurm-dada2-%j.out  # %j = job ID
+
+module load conda/latest
+conda activate dada2-env
+
+# Path to R script
+rscript="/work/pi_sarah_gignouxwolfsohn_uml_edu/jade/dada2.r"
+
+# Run R script
+Rscript "$rscript"
