@@ -1,9 +1,8 @@
 .DS_Store
 .obsidian
 .vscode
-/ipynb_checkpoints
+.ipynb_checkpoints
 .Rhistory
 .Rapp.history
 .RData
 .RDataTmp
-/git
