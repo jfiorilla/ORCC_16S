@@ -16,14 +16,14 @@ names(filtFs) <- sample.names
 names(filtRs) <- sample.names
 
 # Filter and truncation
-out <- filterAndTrim(fnFs, filtFs, fnRs, filtRs, trimLeft=20, truncLen=c(250,250),
+out <- filterAndTrim(fnFs, filtFs, fnRs, filtRs, truncLen=c(250,250),
               maxN=0, maxEE=c(2,2), truncQ=2, rm.phix=TRUE,
-              compress=TRUE, multithread=TRUE)
+              compress=TRUE, multithread=TRUE, verbose=TRUE)
 head(out)
 
 # Learn non-random error rates made during sequencing in R1 and R2
-errF = learnErrors(filtFs, nbases=1e8, multithread=TRUE)
-errR <- learnErrors(filtRs, nbases=1e8, multithread=TRUE)
+errF <- learnErrors(filtFs, multithread=TRUE)
+errR <- learnErrors(filtRs, multithread=TRUE)
 
 dadaFs <- dada(filtFs, err=errF, multithread=TRUE)
 dadaRs <- dada(filtRs, err=errR, multithread=TRUE)
@@ -34,6 +34,9 @@ mergers <- mergePairs(dadaFs, filtFs, dadaRs, filtRs, verbose=TRUE)
 # Make sequence table
 seqtab <- makeSequenceTable(mergers)
 dim(seqtab)
+
+# Inspect distribution of sequence lengths
+table(nchar(getSequences(seqtab)))
 
 write.csv(seqtab, file="/scratch4/workspace/jade_fiorilla_student_uml_edu-rawseqorcc/dada2/ASV.csv")
 
@@ -52,9 +55,3 @@ rownames(track) <- sample.names
 head(track)
 
 write.csv(track, file="/scratch4/workspace/jade_fiorilla_student_uml_edu-rawseqorcc/dada2/read_tracker.csv")
-
-# Taxonomy
-taxa = assignTaxonomy(seqtab.nochim, "/project/pi_sarah_gignouxwolfsohn_uml_edu/BEL_16S_ITS2_seqs/silva_nr99_v138.2_toGenus_trainset.fa.gz", multithread=TRUE)
-dim(taxa)
-
-write.csv(taxa, file="/scratch4/workspace/jade_fiorilla_student_uml_edu-rawseqorcc/dada2/taxa.csv")
