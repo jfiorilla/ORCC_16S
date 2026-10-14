@@ -1,4 +1,5 @@
 library(DECIPHER)
+library(dada2)
 n_cores <- 18
 
 # Load csv from dada2.r script
