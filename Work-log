@@ -1,0 +1,17 @@
+# Work log for CE 2026 data analysis
+### Floating
+[ ] Check positive control mock community (dada2-working.ipnyb) 
+
+### 10.16.26 
+- `dada2-working.ipynb` 
+    - Defined batch parameters to hopefully run faster by actually using the multithread/cpus-per-task functionality
+    - Formatted ASV_nochim.csv into recognizable format by dada2 functions; future Jade will save these sequencing tables as R-objects (.rds) 
+    - Re-running dada2 assignTaxonomy with addSpecies function (job id# 65773007)
+    - Re-running decipher IdTaxa (job id# 65774824)
+- Next steps
+    - Add decipher R and batch script to ipnyb
+    - Download phyloseq
+    - Tidy data for phyloseq pipeline
+
+### 10.17.26
+- 
