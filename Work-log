@@ -1,6 +1,11 @@
 # Work log for CE 2026 data analysis
 ### Floating
 [ ] Check positive control mock community (dada2-working.ipnyb) 
+[ ] Rename batch-scripts folder
+[ ] Rename decipher-taxonomy batch script
+[ ] Rename dada2-assign-taxonomy batch and r script
+[ ] Rename dada2-ASV-table batch and r script
+[ ] Transfer QC log into .ipnyb
 
 ### 10.16.26 
 - `dada2-working.ipynb` 
