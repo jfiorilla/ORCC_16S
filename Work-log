@@ -14,9 +14,18 @@
     - Re-running dada2 assignTaxonomy with addSpecies function (job id# 65773007)
     - Re-running decipher IdTaxa (job id# 65774824)
 - Next steps
-    - Add decipher R and batch script to ipnyb
+    - Add decipher R and batch script to ipynb
     - Download phyloseq
     - Tidy data for phyloseq pipeline
 
 ### 10.17.26
-- 
+- `dada2-working.ipynb'
+    - Added decipher R and batch script to ipynb
+- `phyloseq-working.ipynb`
+    - Install phyloseq to dada2-env conda environment
+    - Read in sample metadata csv and 16S processing metadata csv
+    - Start tidying csvs
+- Next steps
+    - Join metaSamples and meta16S tables
+    - Create Tissue_sample row that appends tissue type to sample ID to match sequence file names
+    - Run phyloseq using ASV table, taxa table, and meta table
