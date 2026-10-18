@@ -5,16 +5,19 @@ library(dada2)
 threads <- as.integer(Sys.getenv("SLURM_CPUS_PER_TASK", "1"))
 
 # Load csv
-seqtab.nochim <- read.csv("/scratch4/workspace/jade_fiorilla_student_uml_edu-rawseqorcc/dada2/ASV_nochim.csv", 
+seqtab.nochim <- read.csv("/scratch4/workspace/jade_fiorilla_student_uml_edu-rawseqorcc/dada2/ASV_nochim.csv",
                           row.names = 1, check.names = FALSE)
 seqtab.nochim <- as.matrix(seqtab.nochim)
 storage.mode(seqtab.nochim) <- "numeric"
-
-#  -- AI, turn CSV into format required by dada2
+# -- AI, turn CSV into format required by dada2
 # -- Save as an RDS object next time rather than a csv and use lines below
 
 # Load RDS from ASV-table.r
 # seqtab.nochim <- readRDS("/scratch4/workspace/jade_fiorilla_student_uml_edu-rawseqorcc/dada2/ASV_nochim.rds")
+
+# Save ASV_nochim as RDS for future use
+saveRDS(seqtab.nochim, /scratch4/workspace/jade_fiorilla_student_uml_edu-rawseqorcc/dada2/ASVs_nochim.rds)
+print("Saved ASV_nochim RDS")
 
 # Assign taxa to genus
 taxa <- assignTaxonomy(seqtab.nochim, "/work/pi_sarah_gignouxwolfsohn_uml_edu/jade/silva_nr99_v138.2_toGenus_trainset.fa.gz", 
