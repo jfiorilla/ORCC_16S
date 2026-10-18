@@ -29,3 +29,8 @@
     - Join metaSamples and meta16S tables
     - Create Tissue_sample row that appends tissue type to sample ID to match sequence file names
     - Run phyloseq using ASV table, taxa table, and meta table
+
+### 10.18.26
+- `dada2-working.ipynb'
+    - Had to increase requested memory twice for assign-taxonomy job, up to 250GB
+    - Added code to save reformatted ASV_nochim.csv as an RDS file
