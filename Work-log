@@ -19,7 +19,7 @@
     - Tidy data for phyloseq pipeline
 
 ### 10.17.26
-- `dada2-working.ipynb'
+- `dada2-working.ipynb`
     - Added decipher R and batch script to ipynb
 - `phyloseq-working.ipynb`
     - Install phyloseq to dada2-env conda environment
@@ -31,6 +31,10 @@
     - Run phyloseq using ASV table, taxa table, and meta table
 
 ### 10.18.26
-- `dada2-working.ipynb'
+- `dada2-working.ipynb`
     - Had to increase requested memory twice for assign-taxonomy job, up to 250GB
     - Added code to save reformatted ASV_nochim.csv as an RDS file
+    - **Note: the r code chunks in my notebooks are up to date whereas the .r files may not be**
+- `phyloseq.working.ipynb`
+    - More tidying; decided to just use 16S tracking csv and de-concatenate sample names to get treatment metadata
+    - Wrote out code to create phyloseq object using decipher taxonomy
