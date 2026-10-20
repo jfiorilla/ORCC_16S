@@ -1,0 +1,25 @@
+No conda package cache directories found outside your home directory. To
+prevent conda from filling up your home directory, you can create a new
+directory at `/work/pi_<your_pi_name>/$USER/.conda/pkgs` and reload the module. 
+No conda environment directories found outside your home directory. To prevent
+conda from filling up your home directory, you can create a new directory at
+`/work/pi_<your_pi_name>/$USER/.conda/envs` and reload the module. 
+Loading conda version miniforge3-24.7.1
+Loading required package: Rcpp
+[1] "Saved genus RDS"
+     Kingdom    Phylum              Class                 Order            
+[1,] "Bacteria" "Verrucomicrobiota" "Omnitrophia"         NA               
+[2,] "Bacteria" "Pseudomonadota"    "Alphaproteobacteria" NA               
+[3,] "Bacteria" "Cyanobacteriota"   "Cyanobacteriia"      "Synechococcales"
+[4,] "Bacteria" "Cyanobacteriota"   "Cyanobacteriia"      "Chloroplast"    
+[5,] "Bacteria" "Cyanobacteriota"   "Cyanobacteriia"      "Synechococcales"
+[6,] "Bacteria" "Pseudomonadota"    "Alphaproteobacteria" "Rickettsiales"  
+     Family         Genus               
+[1,] NA             NA                  
+[2,] NA             NA                  
+[3,] "Cyanobiaceae" "Cyanobium PCC-6307"
+[4,] NA             NA                  
+[5,] "Cyanobiaceae" "Cyanobium PCC-6307"
+[6,] NA             NA                  
+/var/spool/slurm/slurmd/job65800716/slurm_script: line 17: 3643436 Killed                  Rscript "$rscript"
+[2026-10-18T10:54:44.891] error: Detected 1 oom_kill event in StepId=65800716.batch. Some of the step tasks have been OOM Killed.

@@ -3,9 +3,9 @@
 #SBATCH --nodes=1
 #SBATCH --ntasks=1 
 #SBATCH --cpus-per-task=8 # allow multiple threads per node
-#SBATCH --mem=50G 
+#SBATCH --mem=30G 
 #SBATCH -t 72:00:00 
-#SBATCH --job-name=phyloseq
+#SBATCH --job-name=decipher-taxonomy
 #SBATCH --mail-type=ALL
 #SBATCH -o /scratch4/workspace/jade_fiorilla_student_uml_edu-rawseqorcc/slurm-%x-%j.out 
 
@@ -13,7 +13,7 @@ module load conda/latest
 conda activate dada2-env
 
 # Path to R script
-rscript="/work/pi_sarah_gignouxwolfsohn_uml_edu/jade/r-scripts/phyloseq.r"
+rscript="/work/pi_sarah_gignouxwolfsohn_uml_edu/jade/r-scripts/asv-rds.r"
 
 # Run R script
 Rscript "$rscript"
