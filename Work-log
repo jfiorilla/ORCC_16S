@@ -2,9 +2,9 @@
 ### Floating
 [ ] Check positive control mock community (dada2-working.ipnyb) 
 [ ] Rename batch-scripts folder
-[ ] Rename decipher-taxonomy batch script
+[X] Rename decipher-taxonomy batch script
 [ ] Rename dada2-assign-taxonomy batch and r script
-[ ] Rename dada2-ASV-table batch and r script
+[X] Rename dada2-ASV-table batch and r script
 [ ] Transfer QC log into .ipnyb
 
 ### 10.16.26 
@@ -32,7 +32,7 @@
 
 ### 10.18.26
 - `dada2-working.ipynb`
-    - Had to increase requested memory twice for assign-taxonomy job, up to 250GB
+    - Had to increase requested memory twice for assign-taxonomy job, up to 250GB (job id# 65823592)
     - Added code to save reformatted ASV_nochim.csv as an RDS file
     - **Note: the r code chunks in my notebooks are up to date whereas the .r files may not be**
 - `phyloseq.working.ipynb`
