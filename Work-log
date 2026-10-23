@@ -38,3 +38,6 @@
 - `phyloseq.working.ipynb`
     - More tidying; decided to just use 16S tracking csv and de-concatenate sample names to get treatment metadata
     - Wrote out code to create phyloseq object using decipher taxonomy
+
+### 10.20.26
+- check negatives
