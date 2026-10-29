@@ -5,7 +5,7 @@ library(dada2)
 threads <- as.integer(Sys.getenv("SLURM_CPUS_PER_TASK", "1"))
 
 # Load RDS from ASV-table.r
-# seqtab.nochim <- readRDS("/scratch4/workspace/jade_fiorilla_student_uml_edu-rawseqorcc/dada2/ASV_nochim_2.rds")
+seqtab.nochim <- readRDS("/scratch4/workspace/jade_fiorilla_student_uml_edu-rawseqorcc/dada2/ASV_nochim_2.rds")
 
 # Assign taxa to genus
 taxa <- assignTaxonomy(seqtab.nochim, "/work/pi_sarah_gignouxwolfsohn_uml_edu/jade/silva_nr99_v138.2_toGenus_trainset.fa.gz", 
